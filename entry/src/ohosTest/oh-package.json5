@@ -1,0 +1,9 @@
+{
+  "name": "entry_test",
+  "version": "1.0.0",
+  "description": "进阶 Level 测试模块",
+  "main": "",
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {}
+}

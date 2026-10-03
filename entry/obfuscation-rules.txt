@@ -1,0 +1,6 @@
+# Define project specific obfuscation rules here.
+# You can include the configuration files in DevEco Studio to apply obfuscation.
+-enable-property-obfuscation
+-enable-toplevel-obfuscation
+-enable-filename-obfuscation
+-enable-export-obfuscation

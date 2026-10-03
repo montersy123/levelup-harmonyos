@@ -1,0 +1,16 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "进阶 Level 主模块"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "每日任务，成为更好的自己"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "进阶"
+    }
+  ]
+}

@@ -1,19 +1,32 @@
 """
 生成 README 里截图位置的占位图。
 
-真实界面截图请用 DevEco Studio 的 Previewer 截取后，用同名文件覆盖：
-    docs/screenshots/01-cover.png    封面海报
-    docs/screenshots/02-today.png    今日任务
-    docs/screenshots/03-detail.png   任务详情
-    docs/screenshots/04-stats.png    数据统计
-    docs/screenshots/05-library.png  资料库
-    docs/screenshots/06-me.png       我的
+**只在设计稿没有对应画面时才用** —— 目前是「资料库」和「我的」两页：
+设计稿的标签栏有这两个入口，但没有画对应屏幕，
+所以只能等 HarmonyOS App 的实机截图来补。
+
+另外 4 屏（封面 / 今日 / 详情 / 数据）是 design 稿里真实存在的，
+用 tools/crop_design_shots.py 从设计稿渲染图裁出来，不是占位图。
+
+用法：
+    python tools/gen_screenshots_placeholder.py            # 生成全部 6 张占位
+    python tools/gen_screenshots_placeholder.py 05-library 06-me   # 只补缺的
+
+文件名：
+    docs/screenshots/01-cover.png    封面海报   ← 设计稿截图
+    docs/screenshots/02-today.png    今日任务   ← 设计稿截图
+    docs/screenshots/03-detail.png   任务详情   ← 设计稿截图
+    docs/screenshots/04-stats.png    数据统计   ← 设计稿截图
+    docs/screenshots/05-library.png  资料库     ← 待实机截图（占位）
+    docs/screenshots/06-me.png       我的       ← 待实机截图（占位）
 
 占位图沿用设计令牌（墨黑 #1a1714 / 橙 #e98425 / 暖白 #fdf8f0），
-并在图上写明「截图待补充」，避免被误认为真实界面。
+并在图上写明「待实机截图」，避免被误认为真实界面。
 """
 
 import os
+import sys
+
 from PIL import Image, ImageDraw, ImageFont
 
 OUT = r"D:\DshProjects\app\LevelUp\docs\screenshots"
@@ -66,7 +79,7 @@ def make(name, label, index, total):
     cx, cy = W // 2, H // 2 - 40
     rounded(d, [cx - 92, cy - 62, cx + 92, cy + 62], 18,
             fill=(255, 255, 255), outline=LINE, width=2)
-    d.text((cx, cy - 18), "截图待补充", font=font(20), fill=INK, anchor="mm")
+    d.text((cx, cy - 18), "待实机截图", font=font(20), fill=INK, anchor="mm")
     d.text((cx, cy + 12), "DevEco Studio Previewer", font=font(12),
            fill=MUTED, anchor="mm")
     d.text((cx, cy + 32), f"{index} / {total}", font=font(12), fill=ACCENT, anchor="mm")
@@ -85,6 +98,10 @@ def make(name, label, index, total):
 
 
 if __name__ == "__main__":
+    # 支持只补部分：python gen_screenshots_placeholder.py 05-library 06-me
+    wanted = set(sys.argv[1:])
     for i, (name, label) in enumerate(SHOTS, start=1):
+        if wanted and name not in wanted:
+            continue
         make(name, label, i, len(SHOTS))
     print("done ->", OUT)

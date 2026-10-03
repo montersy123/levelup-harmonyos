@@ -17,16 +17,32 @@
 
 ## 界面预览
 
-> 以下截图为 **DevEco Studio Previewer 渲染的真实界面**。
-> 截图正在补充中（`docs/screenshots/`）——补齐前对应的图会显示为占位。
+> **说明**：下面前 4 张是把设计源文件 `daily-quests-app.html` 用无头 Chrome
+> 渲染后裁出的**设计稿界面**——它们是这套 UI 的视觉基准，**不是鸿蒙 App 实机运行的截图**。
+> 设计稿只画了 4 屏，所以「资料库」「我的」两页没有设计稿画面，
+> 只能等 DevEco Studio Previewer 的实机截图来补（当前为占位图）。
 
-| 封面海报 | 今日任务 | 任务详情 |
-|:---:|:---:|:---:|
-| ![封面海报](docs/screenshots/01-cover.png) | ![今日任务](docs/screenshots/02-today.png) | ![任务详情](docs/screenshots/03-detail.png) |
+| 封面海报 | 今日任务 | 任务详情 | 数据统计 |
+|:---:|:---:|:---:|:---:|
+| ![封面海报](docs/screenshots/01-cover.png) | ![今日任务](docs/screenshots/02-today.png) | ![任务详情](docs/screenshots/03-detail.png) | ![数据统计](docs/screenshots/04-stats.png) |
+| 设计稿 | 设计稿 | 设计稿 | 设计稿 |
 
-| 数据统计 | 资料库 | 我的 |
-|:---:|:---:|:---:|
-| ![数据统计](docs/screenshots/04-stats.png) | ![资料库](docs/screenshots/05-library.png) | ![我的](docs/screenshots/06-me.png) |
+| 资料库 | 我的 |
+|:---:|:---:|
+| ![资料库](docs/screenshots/05-library.png) | ![我的](docs/screenshots/06-me.png) |
+| 待实机截图 | 待实机截图 |
+
+设计稿截图由脚本生成，可重复执行：
+
+```powershell
+# 1) 用无头 Chrome 按设计稿真实尺寸整页截图（1594x915 @2x）
+#    实际命令见 tools/ 下的脚本注释
+# 2) 按 CSS 推导出的坐标裁成单台手机
+python tools/crop_design_shots.py
+```
+
+坐标不是目测的：由 `tools/design_shot_geom.py` 按 `daily-quests-app.html`
+里的 `.stage-bar` / `.phones` / `.phone` 规则逐条算出来。
 
 ---
 

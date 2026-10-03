@@ -10,3 +10,6 @@
 /.clang-tidy
 **/.test
 build-log.txt
+
+# 截图脚本的临时产物
+docs/_raw/

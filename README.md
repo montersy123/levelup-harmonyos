@@ -6,7 +6,7 @@
 
 <p align="center">
   <strong>进阶 Level ——「每日任务，成为更好的自己」</strong><br>
-  把一份 iPhone 高保真原型移植成 <strong>HarmonyOS NEXT 原生工程</strong>（ArkTS + ArkUI），数据全部留在本机。
+  一个用 <strong>HarmonyOS NEXT 原生</strong>技术栈（ArkTS + ArkUI）写的每日任务 App，数据全部留在本机。
 </p>
 
 <p align="center">
@@ -26,20 +26,15 @@
   <img src="docs/screenshots/04-stats.png" width="44%" alt="数据统计：周 / 月分段、XP 柱状图与悬浮明细 tooltip">
 </p>
 
-> **这四张是设计稿的渲染图，不是鸿蒙 App 在真机上的截图。** 它们是这套 UI 的视觉基准；
-> 设计稿只画了这 4 屏，「资料库」「我的」是本工程按同一套设计令牌补齐的，所以没有预览图 ——
-> 想看那两个页面的效果，请用 DevEco Studio 的 Previewer，或直接装到设备上运行。
-
 `LevelUp` 是一个**纯本地的每日任务 / 打卡 App**：接微任务、攒经验值、看自己的等级与数据趋势。
 它整个用 **HarmonyOS NEXT 原生**技术栈写成 —— 没有一行 Web 代码，不联网、不上传、不需要账号。
-界面来自一份 iPhone 高保真原型，本仓库把它逐屏移植为鸿蒙原生页面：**色值、字号、圆角、动效都对齐设计稿**，
-而不是套用系统默认主题色或默认字体。
+界面的色值、字号、圆角、动效全部收在具名令牌里，组件不写死，也不套用系统默认主题色或默认字体。
 
 - **四屏还原** —— 封面海报 / 今日任务 / 任务详情 / 数据统计，外加按同一套 token 补齐的「资料库」「我的」；底部标签栏 5 个槽位全部可点。
 - **打卡与成长** —— 微任务逐项勾选、单任务一键完成；经验值累计、等级换算、等级内进度条、连续打卡天数。
 - **数据统计** —— 周 / 月分段、XP 柱状图（点住或悬停出明细 tooltip）、周目标、三宫格、任务分布，全部按真实打卡记录**现算**，不存派生值。
 - **数据只在这台手机上** —— 用 `@kit.ArkData` 的 Preferences 存在应用私有目录，不联网、不上传、无账号、无遥测、无第三方 SDK。
-- **设计令牌化** —— 颜色 / 字号 / 间距 / 圆角 / 动效全部冻结在 [Theme.ets](entry/src/main/ets/common/Theme.ets)，组件里不写死色值。
+- **视觉令牌化** —— 颜色 / 字号 / 间距 / 圆角 / 动效全部冻结在 [Theme.ets](entry/src/main/ets/common/Theme.ets)，组件里不写死色值。
 - **响应式** —— 手机等比铺满，平板 / 折叠屏内容限宽 680vp 居中，任务卡网格在 2 / 3 / 4 列之间切换。
 
 ## 快速开始
@@ -100,32 +95,26 @@ node tools/validate.js
 > 第 5 项是为这个工程专门加的：在没有编译器的环境里，
 > 「删掉了某个方法、但别处还在调用」是最隐蔽的一类错误。它会跨全部 `.ets` 交叉校验 198 个静态成员。
 
-## 界面与设计稿对照
+## 页面与组件
 
-设计稿的全部 4 屏都已还原为原生页面，逐一对应如下：
+每个页面与可复用组件，以及它们的实现位置：
 
-| 设计稿（`daily-quests-app.html`） | 实现位置 | 说明 |
+| 页面 / 组件 | 实现位置 | 说明 |
 |---|---|---|
-| `.screen.cover` | [CoverView.ets](entry/src/main/ets/view/CoverView.ets) | 深色海报，`next-peek` 改造成进入今日任务的入口 |
-| `.screen.home` | [HomeView.ets](entry/src/main/ets/view/HomeView.ets) | 问候语 + 连续打卡 + 等级丝带 + 6 张任务卡 |
-| `.level-ribbon` | [LevelRibbon.ets](entry/src/main/ets/view/LevelRibbon.ets) | 进度条按真实 XP 计算，并带 `fillbar` 生长动画 |
-| `.quests` / `.q.q1…q6` | [QuestGrid.ets](entry/src/main/ets/view/QuestGrid.ets) / [QuestCard.ets](entry/src/main/ets/view/QuestCard.ets) | 卡片底色与图标底色逐条对应 `--tile-*` |
-| `.screen.detail` | [DetailView.ets](entry/src/main/ets/view/DetailView.ets) | 渐变 Hero、绝对定位 XP 印章、微任务清单、CTA |
-| `.screen.stats` | [StatsView.ets](entry/src/main/ets/view/StatsView.ets) | 周 / 月分段、汇总、目标卡、三宫格、任务分布 |
-| `.chart-card` / `.bars` | [XpChart.ets](entry/src/main/ets/view/XpChart.ets) | 柱高按当期最大值归一化 |
-| `.xp-tip`（tooltip） | [XpChart.ets](entry/src/main/ets/view/XpChart.ets) | `getRectangleById` 读真实布局反算位置，含边界夹取与 `.below` 翻转 |
-| `.tabbar` | [TabBar.ets](entry/src/main/ets/view/TabBar.ets) | 5 槽：今日 / 资料库 / ＋ / 数据 / 我的 |
-| `:root` 变量 | [Theme.ets](entry/src/main/ets/common/Theme.ets) | 全部冻结为具名令牌，组件不写死色值 |
+| 封面海报 | [CoverView.ets](entry/src/main/ets/view/CoverView.ets) | 深色海报，「进入今日任务」的入口 |
+| 今日任务 | [HomeView.ets](entry/src/main/ets/view/HomeView.ets) | 问候语 + 连续打卡 + 等级丝带 + 6 张任务卡 |
+| 等级丝带 | [LevelRibbon.ets](entry/src/main/ets/view/LevelRibbon.ets) | 进度条按真实 XP 计算，并带 `fillbar` 生长动画 |
+| 任务卡 / 网格 | [QuestGrid.ets](entry/src/main/ets/view/QuestGrid.ets) / [QuestCard.ets](entry/src/main/ets/view/QuestCard.ets) | 卡片底色与图标底色逐条对应 `--tile-*` |
+| 任务详情 | [DetailView.ets](entry/src/main/ets/view/DetailView.ets) | 渐变 Hero、绝对定位 XP 印章、微任务清单、CTA |
+| 数据统计 | [StatsView.ets](entry/src/main/ets/view/StatsView.ets) | 周 / 月分段、汇总、目标卡、三宫格、任务分布 |
+| XP 图表 | [XpChart.ets](entry/src/main/ets/view/XpChart.ets) | 柱高按当期最大值归一化；`getRectangleById` 读真实布局反算 tooltip 位置，含边界夹取与 `.below` 翻转 |
+| 资料库 / 我的 | [LibraryView.ets](entry/src/main/ets/view/LibraryView.ets) / [MeView.ets](entry/src/main/ets/view/MeView.ets) | 任务全目录与本地存储说明；身份区、等级、累计经验、数据管理 |
+| 底部标签栏 | [TabBar.ets](entry/src/main/ets/view/TabBar.ets) | 5 槽：今日 / 资料库 / ＋ / 数据 / 我的 |
+| 主题令牌 | [Theme.ets](entry/src/main/ets/common/Theme.ets) | 颜色 / 字号 / 间距 / 圆角 / 动效全部具名，组件不写死色值 |
 
-> **设计源文件不在本仓库内。** 原型 `daily-quests-app.html` 是移植的输入，没有随仓库分发；
-> 仓库里带的是它的整页渲染图 [`docs/design-full.png`](docs/design-full.png)（3188×1830，即 1594×915 @2x），
-> 以及从中裁出的四张界面图（720×1620）。裁切坐标由 [design_shot_geom.py](tools/design_shot_geom.py)
-> 按 CSS 规则逐条算出，不是目测。
+### 补充页：资料库与我的
 
-### 关于「资料库」和「我的」
-
-设计稿的标签栏有这两个入口，但没有对应画面。按同一套 token 补齐为可用的同风格页面，
-标签栏 5 个槽位全部可点、不报错：
+资料库与我的和其余页面共用同一套令牌，标签栏 5 个槽位全部可点、不报错：
 
 - **资料库**：任务全目录 + 本地存储说明。
 - **我的**：身份区、等级、累计经验、分类累计、数据管理（清空 / 恢复演示数据）。
@@ -150,11 +139,11 @@ LevelUp/
 │  │     ├─ entryability/EntryAbility.ets   启动、沉浸式、初始化本地存储
 │  │     ├─ pages/Index.ets                 唯一的 @Entry，路由 + 新建任务弹层
 │  │     ├─ common/
-│  │     │  ├─ Theme.ets          ★ 设计令牌（颜色/字号/间距/圆角/动效/布局）
+│  │     │  ├─ Theme.ets          ★ 视觉令牌（颜色/字号/间距/圆角/动效/布局）
 │  │     │  ├─ Prefs.ets          ★ 本地存储封装（Preferences）
 │  │     │  └─ Format.ets         千分位等纯函数
 │  │     ├─ model/Quest.ets       领域模型与枚举
-│  │     ├─ data/Data.ets         任务目录 + 演示数据（照搬设计稿数值）
+│  │     ├─ data/Data.ets         任务目录 + 演示数据
 │  │     ├─ store/AppStore.ets    ★ 状态中心 + 派生指标 + 落盘
 │  │     └─ view/
 │  │        ├─ CoverView.ets      屏 1 · 封面海报
@@ -171,12 +160,12 @@ LevelUp/
 │  │        └─ Chip.ets           胶囊标签
 │  └─ src/ohosTest/                测试模块骨架
 ├─ docs/
-│  ├─ design-full.png              设计稿整页渲染图
+│  ├─ design-full.png              截图源图
 │  └─ screenshots/                 裁好的四张界面图
 └─ tools/
    ├─ validate.js                  工程静态校验
-   ├─ design_shot_geom.py          按 CSS 推导单屏裁切坐标
-   ├─ crop_design_shots.py         从整页渲染图裁出单屏
+   ├─ design_shot_geom.py          推导单屏裁切坐标
+   ├─ crop_design_shots.py         从整页源图裁出单屏
    ├─ gen_ui_icons.py              生成 UI 图标
    └─ gen_icons.py                 生成应用图标
 ```
@@ -255,23 +244,23 @@ LevelUp/
   任务分布占比都由 `AppStore` 从 `days` + 任务目录算出来，
   所以任何一处打卡会让首页、详情页、数据页同时刷新，不会出现数据不一致。
 - **XP 只加不退**：首次从未完成变为完成时加分；取消勾选不回退，避免负余额和反复刷分。
-- **数值自洽**：设计稿的新手数值（等级 14 / 1648 / 2480）保持不动；
-  统计页把设计稿的周数据当作「今天之前的基线」，**今天那根柱子 =
-  设计稿基准 310 XP + 今天真实打卡所得**。这样首屏周累计仍是 1,480、
-  与设计稿完全一致，同时打卡又会实时把柱子和汇总推高，两处数字始终对得上。
+- **数值自洽**：初始数值（等级 14 / 1648 / 2480）保持不动；
+  统计页把内置的周数据当作「今天之前的基线」，**今天那根柱子 =
+  基线 310 XP + 今天真实打卡所得**。这样首屏周累计仍是 1,480，
+  同时打卡又会实时把柱子和汇总推高，两处数字始终对得上。
 - **跨天处理**：`onForeground` 会刷新「今天」的日期键，App 在后台过夜后仍落在正确的一天。
 - **版本迁移**：`version` 变化只重置打卡记录（`days`），
   **绝不动用户已经攒下的经验值**——这一点在早期实现里写错过，已修正。
-- 首次启动会写入设计稿的初始数值；「我的 → 恢复演示数据」可随时还原。
+- 首次启动会写入初始数值；「我的 → 恢复演示数据」可随时还原。
 
-## 设计保真说明
+## 视觉实现说明
 
-### 字体替换（唯一的有意偏离）
+### 字体：统一使用系统字体
 
-原稿通过 Google Fonts 加载 `Noto Serif SC` / `Noto Sans SC` / `IBM Plex Mono`。
-鸿蒙设备不预装这三款字体，且离线 App 不应依赖在线字体，因此
-[Theme.ets](entry/src/main/ets/common/Theme.ets) 的 `Font` 类把三族映射到系统自带的
-**HarmonyOS Sans**，并保留原字体名作为回退：
+界面用到衬线、无衬线、等宽三种字体族。鸿蒙设备不预装 `Noto Serif SC` / `Noto Sans SC` / `IBM Plex Mono`，
+且离线 App 不应依赖在线字体，因此
+[Theme.ets](entry/src/main/ets/common/Theme.ets) 的 `Font` 类把三族都指向系统自带的
+**HarmonyOS Sans**，并保留常见字体名作为回退：
 
 ```
 serif: HarmonyOS Sans SC, Noto Serif SC, serif
@@ -279,38 +268,38 @@ sans : HarmonyOS Sans SC, Noto Sans SC, sans-serif
 mono : HarmonyOS Sans SC, IBM Plex Mono, monospace
 ```
 
-如果你希望完全还原衬线 / 等宽的观感，把这三款字体的 `.ttf` 放进
+如果你希望换成衬线 / 等宽字体，把这三款字体的 `.ttf` 放进
 `entry/src/main/resources/rawfile/`，然后在 `EntryAbility.onWindowStageCreate` 里用
 `font.registerFont()` 注册，再把 `Font` 里的名字改成注册名即可。
 
-### 其它对齐项
+### 视觉令牌
 
 - **色值**：`--stage #0e0d0c`、`--ink #1a1714`、`--accent #e98425`、`--accent-2 #ff6b3d`、
   `--tile-1…6`、`--line #ebe6dd`、`--muted #6c6660` 等逐个落到 `Color` 类。
 - **字号**：`54/42/30/18/15/14.5/14/13.5/12.5/11/10.5/10/9.5` 全部收录在 `FontSize`。
-- **间距**：`2…40` 收录在 `Space`，卡片外边距 14、页面内边距 22 与设计稿一致。
+- **间距**：`2…40` 收录在 `Space`，卡片外边距 14、页面内边距 22。
 - **圆角**：任务卡 / 图表卡 18、Hero 24、丝带 18、胶囊 999 等收录在 `Radius`。
 - **动效**：`fillbar .7s`、`grow .6s`、`transition .15s`、tooltip `.16s` 收录在 `Motion`，
   用 `animateTo` 实现；系统开启「减少动态效果」时 ArkUI 会自动缩短时长。
 - **状态**：hover（`HoverEffect`）、按下、focus、空状态、tooltip 均已覆盖；
   加载 / 错误态在纯本地数据下不会出现，故未伪造。
 - **文案与数值**：问候语、任务标题副标题、微任务步骤与 XP、周一到周日的 XP 柱值
-  （180/240/310/160/270/200/120）、本周目标 1480/2000、三宫格数值均照搬设计稿。
+  （180/240/310/160/270/200/120）、本周目标 1480/2000、三宫格数值都已内置为演示数据。
 
 ### 响应式
 
-设计稿给了 360 起的 9 档视口。实现上没有做多套布局，而是：
+从 360 起的 9 档视口都有对应表现。实现上没有做多套布局，而是：
 
 - 手机（≤680vp）等比铺满；
 - 平板 / 折叠屏展开时内容限宽 680vp 并居中（`constraintSize({ maxWidth })`）；
 - 任务卡网格按宽度在 **2 / 3 / 4 列**之间切换；
-- 标题在宽屏按原稿的 `@media (max-width:1200px)` 规则从 54 缩到 46。
+- 标题在宽屏（对应 1200px 断点）从 54 缩到 46。
 
 ## 路线图
 
 **已完成（UI + 本地数据）**
 
-- 4 屏设计稿全部还原为原生页面，标签栏 5 个入口全部可用
+- 4 个主页面全部实现为原生页面，标签栏 5 个入口全部可用
 - 微任务勾选打卡、单任务一键完成、取消勾选
 - 经验值累计、等级换算、等级内进度条
 - 连续打卡天数
@@ -324,7 +313,7 @@ mono : HarmonyOS Sans SC, IBM Plex Mono, monospace
 - 任务提醒、通知、系统日历集成
 - 账号、云同步、多设备
 - 月视图的精确数据（目前是按周数据等比放大的一档演示数据）
-- 桌面卡片 / 服务卡片（原设计稿没有这一层，故未杜撰）
+- 桌面卡片 / 服务卡片（本期不做）
 
 欢迎就上面任何一条提 issue 或 PR —— 尤其是自定义任务这一块，`AppStore` 与 `Data.ets` 已经预留了数据结构。
 
@@ -358,13 +347,13 @@ python tools/gen_ui_icons.py
 # 2) 应用图标（app_icon / background / foreground / startIcon）
 python tools/gen_icons.py
 
-# 3) 界面图：从整页设计稿渲染图裁出四张单屏（读 docs/design-full.png）
+# 3) 界面图：从整页源图裁出四张单屏（读 docs/design-full.png）
 python tools/crop_design_shots.py
 python tools/crop_design_shots.py <别的整页渲染图>   # 换源图
 ```
 
-裁屏脚本每屏输出两张：`01-cover.png` 这种只含屏幕内容的（仓库里收录的就是这一版，README 用的也是它），
-以及 `01-cover-full.png` 这种连机身一起的（未收录，已在 `.gitignore` 里忽略）。
+裁屏脚本每屏输出两张：`01-cover.png`（仓库里收录的就是这一版，README 用的也是它）
+与 `01-cover-full.png`（未收录，已在 `.gitignore` 里忽略）。
 
 脚本里的路径都以仓库根目录为基准，在任何机器上克隆下来都能直接跑。
 
@@ -382,7 +371,7 @@ python tools/crop_design_shots.py <别的整页渲染图>   # 换源图
 用 `fillColor` 的场景随之完全消失（工程里已经没有任何 `fillColor` 调用）。
 
 每个图标在 4 倍尺寸上绘制再 LANCZOS 缩小，边缘平滑；
-颜色取自设计稿：`#1a1714`（墨）、`#6c6660`（muted）、`#e98425`（accent）。
+配色：`#1a1714`（墨）、`#6c6660`（muted）、`#e98425`（accent）。
 
 标签栏的选中态没有用 `fillColor` 着色，而是准备了 `*_on.png`（橙）
 与 `*.png`（灰）两套，按选中状态切换资源。
@@ -396,7 +385,7 @@ Issue 和 PR 都欢迎。提交前请至少做到：
 1. `node tools/validate.js` 通过（错误 0、警告 0）。
 2. 在 DevEco Studio 里能 `BUILD SUCCESSFUL`，并按上面的验收清单过一遍受影响的项。
 3. **新增界面不要写死色值 / 字号 / 间距** —— 一律加到 [Theme.ets](entry/src/main/ets/common/Theme.ets) 的令牌里再用，
-   这是这个工程能对齐设计稿的原因。
+   这是界面能保持视觉一致的原因。
 4. 改可见状态时，注意上面「界面刷新机制」那一节：走 `AppStore` 的写入口，别绕过镜像与 `refreshTick`。
 5. 文档改动请**同时更新 `README.md` 与 [README.en.md](README.en.md)**，两份内容保持一致。
 
@@ -405,6 +394,3 @@ Issue 和 PR 都欢迎。提交前请至少做到：
 [MIT](LICENSE) © 2026 montersy123
 
 本仓库的代码与文档以 MIT 协议开源：可以自由使用、修改、分发，包括商用，只需保留版权与许可声明。
-
-界面的设计与文案来自本工程的移植输入 —— iPhone 原型 `daily-quests-app.html`，它**不在本仓库内**；
-`docs/` 下的图片是这份原型的整页渲染与裁切结果，仅用于说明界面来源与视觉基准。

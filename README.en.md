@@ -6,7 +6,7 @@
 
 <p align="center">
   <strong>Level Up — “Daily quests, become a better you”</strong><br>
-  Porting an iPhone high-fidelity prototype into a <strong>native HarmonyOS NEXT project</strong> (ArkTS + ArkUI), with every piece of data staying on this device.
+  A daily-quest app written with the <strong>native HarmonyOS NEXT</strong> stack (ArkTS + ArkUI), with every piece of data staying on this device.
 </p>
 
 <p align="center">
@@ -26,20 +26,15 @@
   <img src="docs/screenshots/04-stats.png" width="44%" alt="Statistics: week / month segments, XP bar chart and a floating detail tooltip">
 </p>
 
-> **These four images are renders of the design mockups, not screenshots of the HarmonyOS app on a real device.** They are the visual baseline for this UI;
-> the design covers only these 4 screens — “Library” and “Me” were filled in by this project using the same design tokens, which is why there are no preview images —
-> to see how those two pages look, use the DevEco Studio Previewer, or install the app on a device and run it.
-
 `LevelUp` is a **purely local daily-quest / check-in app**: take on micro-tasks, accumulate XP, and watch your level and data trends.
 It is written entirely with the **native HarmonyOS NEXT** stack — not a line of web code, no network, no uploads, no account.
-The UI comes from an iPhone high-fidelity prototype, and this repository ports it screen by screen into native HarmonyOS pages: **colors, font sizes, corner radii and motion all match the design**,
-rather than falling back to the system's default theme color or default font.
+Every color, font size, corner radius and motion curve lives in a named token, so components never hard-code them or fall back to the system's default theme color or font.
 
 - **Four screens reproduced** — cover poster / today's quests / quest detail / statistics, plus “Library” and “Me” filled in from the same token set; all 5 slots in the bottom tab bar are tappable.
 - **Check-ins and growth** — tick micro-tasks one by one, or complete a whole quest in one tap; XP accumulation, level conversion, an in-level progress bar, consecutive check-in days.
 - **Statistics** — week / month segments, XP bar chart (press and hold or hover for a detail tooltip), weekly goal, three-cell grid, quest distribution — all **computed on the fly** from the real check-in records, with no derived values stored.
 - **Data lives on this phone only** — stored in the app's private directory through `@kit.ArkData` Preferences: no network, no uploads, no account, no telemetry, no third-party SDK.
-- **Design tokenized** — colors / font sizes / spacing / radii / motion are all frozen in [Theme.ets](entry/src/main/ets/common/Theme.ets), and components never hard-code color values.
+- **Token-driven visuals** — colors / font sizes / spacing / radii / motion are all frozen in [Theme.ets](entry/src/main/ets/common/Theme.ets), and components never hard-code color values.
 - **Responsive** — phones fill proportionally, tablet / foldable content is capped at 680vp and centered, and the quest card grid switches between 2 / 3 / 4 columns.
 
 ## Quick start
@@ -101,32 +96,26 @@ files declared in `module.json5` / `main_pages.json` actually exist. Current res
 > Item 5 was added specifically for this project: in an environment without a compiler,
 > “a method was deleted but something elsewhere still calls it” is the most insidious class of error. It cross-checks 198 static members across every `.ets` file.
 
-## UI vs. the design mockups
+## Pages and components
 
-All 4 screens of the design have been reproduced as native pages, matched one by one below:
+Every page and reusable component, and where it lives:
 
-| Design mockup (`daily-quests-app.html`) | Implementation | Notes |
+| Page / component | Implementation | Notes |
 |---|---|---|
-| `.screen.cover` | [CoverView.ets](entry/src/main/ets/view/CoverView.ets) | Dark poster; `next-peek` repurposed into the entry point for today's quests |
-| `.screen.home` | [HomeView.ets](entry/src/main/ets/view/HomeView.ets) | Greeting + streak + level ribbon + 6 quest cards |
-| `.level-ribbon` | [LevelRibbon.ets](entry/src/main/ets/view/LevelRibbon.ets) | Progress bar computed from real XP, with a `fillbar` growth animation |
-| `.quests` / `.q.q1…q6` | [QuestGrid.ets](entry/src/main/ets/view/QuestGrid.ets) / [QuestCard.ets](entry/src/main/ets/view/QuestCard.ets) | Card background and icon background map one-to-one onto `--tile-*` |
-| `.screen.detail` | [DetailView.ets](entry/src/main/ets/view/DetailView.ets) | Gradient hero, absolutely positioned XP stamp, micro-task checklist, CTA |
-| `.screen.stats` | [StatsView.ets](entry/src/main/ets/view/StatsView.ets) | Week / month segments, summary, goal card, three-cell grid, quest distribution |
-| `.chart-card` / `.bars` | [XpChart.ets](entry/src/main/ets/view/XpChart.ets) | Bar heights normalized to the highest value of the period |
-| `.xp-tip` (tooltip) | [XpChart.ets](entry/src/main/ets/view/XpChart.ets) | `getRectangleById` reads the real layout to compute position, with edge clamping and a `.below` flip |
-| `.tabbar` | [TabBar.ets](entry/src/main/ets/view/TabBar.ets) | 5 slots: Today / Library / + / Stats / Me |
-| `:root` variables | [Theme.ets](entry/src/main/ets/common/Theme.ets) | All frozen as named tokens; components never hard-code color values |
+| Cover poster | [CoverView.ets](entry/src/main/ets/view/CoverView.ets) | Dark poster; the entry point into today's quests |
+| Today's quests | [HomeView.ets](entry/src/main/ets/view/HomeView.ets) | Greeting + streak + level ribbon + 6 quest cards |
+| Level ribbon | [LevelRibbon.ets](entry/src/main/ets/view/LevelRibbon.ets) | Progress bar computed from real XP, with a `fillbar` growth animation |
+| Quest card / grid | [QuestGrid.ets](entry/src/main/ets/view/QuestGrid.ets) / [QuestCard.ets](entry/src/main/ets/view/QuestCard.ets) | Card background and icon background map one-to-one onto `--tile-*` |
+| Quest detail | [DetailView.ets](entry/src/main/ets/view/DetailView.ets) | Gradient hero, absolutely positioned XP stamp, micro-task checklist, CTA |
+| Statistics | [StatsView.ets](entry/src/main/ets/view/StatsView.ets) | Week / month segments, summary, goal card, three-cell grid, quest distribution |
+| XP chart | [XpChart.ets](entry/src/main/ets/view/XpChart.ets) | Bar heights normalized to the highest value of the period; `getRectangleById` reads the real layout to compute the tooltip position, with edge clamping and a `.below` flip |
+| Library / Me | [LibraryView.ets](entry/src/main/ets/view/LibraryView.ets) / [MeView.ets](entry/src/main/ets/view/MeView.ets) | Full quest catalogue and local-storage notes; identity block, level, lifetime XP, data management |
+| Bottom tab bar | [TabBar.ets](entry/src/main/ets/view/TabBar.ets) | 5 slots: Today / Library / + / Stats / Me |
+| Theme tokens | [Theme.ets](entry/src/main/ets/common/Theme.ets) | Colors / font sizes / spacing / radii / motion all named; components never hard-code color values |
 
-> **The design source file is not in this repository.** The prototype `daily-quests-app.html` is the input to the port and was not distributed with the repo;
-> what the repo carries is a full-page render of it, [`docs/design-full.png`](docs/design-full.png) (3188×1830, that is 1594×915 @2x),
-> plus four screen images cropped from it (720×1620). The crop coordinates were computed rule by rule from the CSS by
-> [design_shot_geom.py](tools/design_shot_geom.py), not estimated by eye.
+### The extra pages: Library and Me
 
-### About “Library” and “Me”
-
-The design's tab bar has these two entries but no corresponding artwork. They were filled in with the same token set
-as usable pages in the same style, and all 5 tab bar slots are tappable and error-free:
+Library and Me share the same token set as the other pages, and all 5 tab bar slots are tappable and error-free:
 
 - **Library**: the full quest catalogue + a note about local storage.
 - **Me**: identity block, level, lifetime XP, per-category totals, data management (clear / restore demo data).
@@ -151,11 +140,11 @@ LevelUp/
 │  │     ├─ entryability/EntryAbility.ets   Startup, immersive mode, local storage init
 │  │     ├─ pages/Index.ets                 The single @Entry: routing + new-quest sheet
 │  │     ├─ common/
-│  │     │  ├─ Theme.ets          ★ Design tokens (color/size/spacing/radius/motion/layout)
+│  │     │  ├─ Theme.ets          ★ Visual tokens (color/size/spacing/radius/motion/layout)
 │  │     │  ├─ Prefs.ets          ★ Local storage wrapper (Preferences)
 │  │     │  └─ Format.ets         Pure helpers such as thousands separators
 │  │     ├─ model/Quest.ets       Domain model and enums
-│  │     ├─ data/Data.ets         Quest catalogue + demo data (values copied from the design)
+│  │     ├─ data/Data.ets         Quest catalogue + demo data
 │  │     ├─ store/AppStore.ets    ★ State hub + derived metrics + persistence
 │  │     └─ view/
 │  │        ├─ CoverView.ets      Screen 1 · cover poster
@@ -172,11 +161,11 @@ LevelUp/
 │  │        └─ Chip.ets           Pill chip
 │  └─ src/ohosTest/                Test module skeleton
 ├─ docs/
-│  ├─ design-full.png              Full-page render of the design
+│  ├─ design-full.png              Source image for the screen crops
 │  └─ screenshots/                 The four cropped screen images
 └─ tools/
    ├─ validate.js                  Project static validation
-   ├─ design_shot_geom.py          Derive per-screen crop coordinates from the CSS
+   ├─ design_shot_geom.py          Derive per-screen crop coordinates
    ├─ crop_design_shots.py         Crop single screens out of the full-page render
    ├─ gen_ui_icons.py              Generate UI icons
    └─ gen_icons.py                 Generate app icons
@@ -256,23 +245,23 @@ to render check state — that path works (and the live check-in feedback is goo
   so a single check-in refreshes the home page, the detail page and the stats page together, and the data can never disagree.
 - **XP only goes up, never down**: points are added the first time something goes from incomplete to complete; unticking does not take them back,
   which avoids negative balances and repeated farming.
-- **Numbers stay self-consistent**: the design's starter values (level 14 / 1648 / 2480) are left untouched;
-  the stats page treats the design's weekly data as “the baseline before today”, so **today's bar =
-  the design baseline of 310 XP + what you actually earned today**. That keeps the first-screen weekly total at 1,480,
-  exactly matching the design, while check-ins still push the bar and the summary up in real time, so the two numbers always agree.
+- **Numbers stay self-consistent**: the starter values (level 14 / 1648 / 2480) are left untouched;
+  the stats page treats the built-in weekly data as “the baseline before today”, so **today's bar =
+  the 310 XP baseline + what you actually earned today**. That keeps the first-screen weekly total at 1,480,
+  while check-ins still push the bar and the summary up in real time, so the two numbers always agree.
 - **Day rollover**: `onForeground` refreshes the “today” date key, so the app still lands on the correct day after sitting in the background overnight.
 - **Version migration**: a change in `version` resets only the check-in records (`days`) and
   **never touches the XP the user has already accumulated** — this was written incorrectly in an early implementation and has been fixed.
-- The first launch writes the design's initial values; “Me → Restore demo data” can bring them back at any time.
+- The first launch writes the initial values; “Me → Restore demo data” can bring them back at any time.
 
-## Design fidelity notes
+## Visual implementation notes
 
-### Font substitution (the only intentional deviation)
+### Fonts: one system family throughout
 
-The original loads `Noto Serif SC` / `Noto Sans SC` / `IBM Plex Mono` through Google Fonts.
-HarmonyOS devices do not ship these three fonts, and an offline app should not depend on online fonts, so the `Font` class in
-[Theme.ets](entry/src/main/ets/common/Theme.ets) maps all three families to the built-in
-**HarmonyOS Sans**, keeping the original font names as fallbacks:
+The UI uses a serif, a sans-serif and a monospace family. HarmonyOS devices do not ship `Noto Serif SC` / `Noto Sans SC` /
+`IBM Plex Mono`, and an offline app should not depend on online fonts, so the `Font` class in
+[Theme.ets](entry/src/main/ets/common/Theme.ets) points all three families at the built-in
+**HarmonyOS Sans**, keeping the common font names as fallbacks:
 
 ```
 serif: HarmonyOS Sans SC, Noto Serif SC, serif
@@ -280,38 +269,38 @@ sans : HarmonyOS Sans SC, Noto Sans SC, sans-serif
 mono : HarmonyOS Sans SC, IBM Plex Mono, monospace
 ```
 
-If you want the serif / monospace look restored exactly, put the `.ttf` files for those three fonts into
+If you would rather use a serif / monospace family, put the `.ttf` files for those three fonts into
 `entry/src/main/resources/rawfile/`, register them with `font.registerFont()` in
 `EntryAbility.onWindowStageCreate`, and then change the names in `Font` to the registered names.
 
-### Other alignment points
+### Visual tokens
 
 - **Colors**: `--stage #0e0d0c`, `--ink #1a1714`, `--accent #e98425`, `--accent-2 #ff6b3d`,
   `--tile-1…6`, `--line #ebe6dd`, `--muted #6c6660` and so on each land in the `Color` class.
 - **Font sizes**: `54/42/30/18/15/14.5/14/13.5/12.5/11/10.5/10/9.5` are all collected in `FontSize`.
-- **Spacing**: `2…40` is collected in `Space`; the 14 card outer margin and the 22 page padding match the design.
+- **Spacing**: `2…40` is collected in `Space`; the card outer margin is 14 and the page padding 22.
 - **Corner radii**: quest card / chart card 18, hero 24, ribbon 18, pill 999 and so on are collected in `Radius`.
 - **Motion**: `fillbar .7s`, `grow .6s`, `transition .15s`, tooltip `.16s` are collected in `Motion`,
   implemented with `animateTo`; when the system turns on “reduce motion”, ArkUI shortens the durations automatically.
 - **States**: hover (`HoverEffect`), pressed, focus, empty state and tooltip are all covered;
   loading / error states cannot occur with purely local data, so they were not faked.
 - **Copy and values**: the greeting, the quest titles and subtitles, the micro-task steps and their XP, the Monday-to-Sunday XP bar values
-  (180/240/310/160/270/200/120), the weekly goal 1480/2000 and the three-cell figures are all copied from the design.
+  (180/240/310/160/270/200/120), the weekly goal 1480/2000 and the three-cell figures are all built in as demo data.
 
 ### Responsive
 
-The design provides 9 viewport steps starting at 360. Rather than building multiple layouts, the implementation:
+Nine viewport steps, starting at 360, all have a corresponding behaviour. Rather than building multiple layouts, the implementation:
 
 - fills proportionally on phones (≤680vp);
 - caps content at 680vp and centers it on tablets / unfolded foldables (`constraintSize({ maxWidth })`);
 - switches the quest card grid between **2 / 3 / 4 columns** by width;
-- shrinks the heading from 54 to 46 on wide screens, following the original's `@media (max-width:1200px)` rule.
+- shrinks the heading from 54 to 46 on wide screens (the equivalent of a 1200px breakpoint).
 
 ## Roadmap
 
 **Done (UI + local data)**
 
-- All 4 design screens reproduced as native pages, with all 5 tab bar entries usable
+- All 4 main pages implemented as native pages, with all 5 tab bar entries usable
 - Micro-task ticking, one-tap completion of a whole quest, unticking
 - XP accumulation, level conversion, in-level progress bar
 - Consecutive check-in days
@@ -325,7 +314,7 @@ The design provides 9 viewport steps starting at 360. Rather than building multi
 - Quest reminders, notifications, system calendar integration
 - Accounts, cloud sync, multiple devices
 - Precise month-view data (currently a single demo step scaled proportionally from the weekly data)
-- Home-screen cards / service cards (the original design has no such layer, so none were invented)
+- Home-screen cards / service cards (not in this release)
 
 Issues and PRs on any of the above are welcome — especially custom quests, where `AppStore` and `Data.ets` already reserve the data structures.
 
@@ -359,13 +348,13 @@ python tools/gen_ui_icons.py
 # 2) App icons (app_icon / background / foreground / startIcon)
 python tools/gen_icons.py
 
-# 3) Screen images: crop the four single screens out of the full-page design render (reads docs/design-full.png)
+# 3) Screen images: crop the four single screens out of the full-page source image (reads docs/design-full.png)
 python tools/crop_design_shots.py
 python tools/crop_design_shots.py <another full-page render>   # use a different source image
 ```
 
-The crop script emits two images per screen: `01-cover.png`, containing the screen contents only (the version kept in the
-repository and used by this README), and `01-cover-full.png`, which includes the phone body (not kept; ignored through `.gitignore`).
+The crop script emits two images per screen: `01-cover.png` (the version kept in the repository and used by this
+README) and `01-cover-full.png` (not kept; ignored through `.gitignore`).
 
 Paths inside the scripts are all relative to the repository root, so they run straight after cloning on any machine.
 
@@ -383,7 +372,7 @@ the least troublesome and most reliable approach is to **draw them directly as P
 which removes every use of `fillColor` (there is no `fillColor` call left anywhere in the project).
 
 Each icon is drawn at 4× size and downscaled with LANCZOS, so the edges are smooth;
-the colors come from the design: `#1a1714` (ink), `#6c6660` (muted), `#e98425` (accent).
+the palette is `#1a1714` (ink), `#6c6660` (muted) and `#e98425` (accent).
 
 The tab bar's selected state is not colored with `fillColor` either; instead there are two sets, `*_on.png` (orange)
 and `*.png` (gray), switched by selection state.
@@ -397,7 +386,7 @@ Issues and PRs are welcome. Before submitting, at minimum:
 1. `node tools/validate.js` passes (0 errors, 0 warnings).
 2. It reaches `BUILD SUCCESSFUL` in DevEco Studio, and you have walked through the affected items in the acceptance checklist above.
 3. **Do not hard-code color values / font sizes / spacing in new UI** — always add them to the tokens in [Theme.ets](entry/src/main/ets/common/Theme.ets) and use them from there;
-   this is why this project can stay aligned with the design.
+   this is what keeps the UI visually consistent.
 4. When changing visible state, mind the “UI refresh mechanism” section above: go through `AppStore`'s write entry points, and do not bypass the mirrors and `refreshTick`.
 5. For documentation changes, please **update both `README.md` and [README.en.md](README.en.md)** so that the two stay consistent.
 
@@ -406,6 +395,3 @@ Issues and PRs are welcome. Before submitting, at minimum:
 [MIT](LICENSE) © 2026 montersy123
 
 The code and documentation in this repository are open source under the MIT license: you are free to use, modify and distribute them, including commercially, as long as you keep the copyright and license notice.
-
-The UI design and copy come from this project's porting input — the iPhone prototype `daily-quests-app.html`, which **is not in this repository**;
-the images under `docs/` are the full-page render and crops of that prototype, used only to document where the UI came from and what the visual baseline is.

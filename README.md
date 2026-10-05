@@ -1,76 +1,78 @@
-# 进阶 Level · 鸿蒙原生 App
+<p align="right">
+  <strong>简体中文</strong> · <a href="README.en.md">English</a>
+</p>
 
-「每日任务，成为更好的自己」——把一份 iPhone 高保真原型（`daily-quests-app.html`）
-移植成 **HarmonyOS NEXT 原生工程（ArkTS + ArkUI）**。
+<h1 align="center">LevelUp</h1>
 
-![HarmonyOS NEXT](https://img.shields.io/badge/HarmonyOS%20NEXT-API%2012-1A1714?style=flat-square)
-![ArkTS](https://img.shields.io/badge/ArkTS-ArkUI-E98425?style=flat-square)
-![Build](https://img.shields.io/badge/build-passing-2F8F3C?style=flat-square)
-![License](https://img.shields.io/badge/license-Apache--2.0-6C6660?style=flat-square)
+<p align="center">
+  <strong>进阶 Level ——「每日任务，成为更好的自己」</strong><br>
+  把一份 iPhone 高保真原型移植成 <strong>HarmonyOS NEXT 原生工程</strong>（ArkTS + ArkUI），数据全部留在本机。
+</p>
 
-- 功能按需求**暂时不做**：新建任务、账号、同步等业务逻辑留白。
-- 数据**全部保存在手机本地**（`@kit.ArkData` 的 Preferences），不联网、不上传、不需要账号。
-- 界面、文案、色值、圆角、动效全部对齐原设计稿，未引入框架默认主题色或默认字体。
-- `compatibleSdkVersion: 5.0.0(12)`，编译目标 API 12，已在 API 26 SDK + hvigor 6.26.8 下实测通过。
+<p align="center">
+  <a href="https://github.com/montersy123/levelup-harmonyos/stargazers"><img src="https://img.shields.io/github/stars/montersy123/levelup-harmonyos?style=social" alt="GitHub stars"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT"></a>
+  <img src="https://img.shields.io/badge/HarmonyOS%20NEXT-API%2012-1A1714?style=flat-square" alt="HarmonyOS NEXT API 12">
+  <img src="https://img.shields.io/badge/ArkTS-ArkUI-E98425?style=flat-square" alt="ArkTS + ArkUI">
+  <img src="https://img.shields.io/badge/build-passing-2F8F3C?style=flat-square" alt="build passing">
+</p>
 
----
+<p align="center">
+  <img src="docs/screenshots/01-cover.png" width="44%" alt="封面海报：深色海报，标题里的「更好的自己」是橙色">
+  <img src="docs/screenshots/02-today.png" width="44%" alt="今日任务：问候语、连续打卡、等级丝带与 6 张任务卡">
+</p>
+<p align="center">
+  <img src="docs/screenshots/03-detail.png" width="44%" alt="任务详情：渐变 Hero、绝对定位的 XP 印章、微任务清单与 CTA">
+  <img src="docs/screenshots/04-stats.png" width="44%" alt="数据统计：周 / 月分段、XP 柱状图与悬浮明细 tooltip">
+</p>
 
-## 界面预览
+> **这四张是设计稿的渲染图，不是鸿蒙 App 在真机上的截图。** 它们是这套 UI 的视觉基准；
+> 设计稿只画了这 4 屏，「资料库」「我的」是本工程按同一套设计令牌补齐的，所以没有预览图 ——
+> 想看那两个页面的效果，请用 DevEco Studio 的 Previewer，或直接装到设备上运行。
 
-> **说明**：这四张是把设计源文件 `daily-quests-app.html` 用无头 Chrome 渲染后
-> 裁出的**设计稿界面**——它们是这套 UI 的视觉基准，**不是鸿蒙 App 实机运行的截图**。
-> 设计稿只画了这 4 屏。
->
-> 另外两页「资料库」「我的」在设计稿里没有画面（是本工程按同一套设计令牌补齐的），
-> 所以这里不提供预览图。想看效果请用 DevEco Studio 的 Previewer 或装到设备上运行。
+`LevelUp` 是一个**纯本地的每日任务 / 打卡 App**：接微任务、攒经验值、看自己的等级与数据趋势。
+它整个用 **HarmonyOS NEXT 原生**技术栈写成 —— 没有一行 Web 代码，不联网、不上传、不需要账号。
+界面来自一份 iPhone 高保真原型，本仓库把它逐屏移植为鸿蒙原生页面：**色值、字号、圆角、动效都对齐设计稿**，
+而不是套用系统默认主题色或默认字体。
 
-| 封面海报 | 今日任务 |
-|:---:|:---:|
-| ![封面海报](docs/screenshots/01-cover.png) | ![今日任务](docs/screenshots/02-today.png) |
+- **四屏还原** —— 封面海报 / 今日任务 / 任务详情 / 数据统计，外加按同一套 token 补齐的「资料库」「我的」；底部标签栏 5 个槽位全部可点。
+- **打卡与成长** —— 微任务逐项勾选、单任务一键完成；经验值累计、等级换算、等级内进度条、连续打卡天数。
+- **数据统计** —— 周 / 月分段、XP 柱状图（点住或悬停出明细 tooltip）、周目标、三宫格、任务分布，全部按真实打卡记录**现算**，不存派生值。
+- **数据只在这台手机上** —— 用 `@kit.ArkData` 的 Preferences 存在应用私有目录，不联网、不上传、无账号、无遥测、无第三方 SDK。
+- **设计令牌化** —— 颜色 / 字号 / 间距 / 圆角 / 动效全部冻结在 [Theme.ets](entry/src/main/ets/common/Theme.ets)，组件里不写死色值。
+- **响应式** —— 手机等比铺满，平板 / 折叠屏内容限宽 680vp 居中，任务卡网格在 2 / 3 / 4 列之间切换。
 
-| 任务详情 | 数据统计 |
-|:---:|:---:|
-| ![任务详情](docs/screenshots/03-detail.png) | ![数据统计](docs/screenshots/04-stats.png) |
-
-截图的生成方式：先用无头 Chrome 按设计稿真实尺寸整页截图（1594×915 @2x），
-再按 CSS 推导出的坐标裁成单屏——坐标由 `tools/design_shot_geom.py` 逐条算出，不是目测。
-
-```powershell
-python tools/crop_design_shots.py          # 裁出单屏（需要 docs/_raw/design-full.png）
-```
-
----
-
-## 一、快速开始
+## 快速开始
 
 ### 环境要求
 
-| 项 | 本机已验证 |
+| 项 | 本工程使用 |
 |---|---|
-| DevEco Studio | 已安装于 `D:\Program Files\Huawei\DevEco Studio` |
+| DevEco Studio | 5.0 及以上（本工程在 DevEco Studio 下同步、编译通过） |
 | HarmonyOS SDK | API 26（platformVersion 26.0.0.105） |
 | hvigor | 6.26.8（随 DevEco Studio 附带） |
 | 编译目标 | `compatibleSdkVersion: 5.0.0(12)`，`runtimeOS: HarmonyOS` |
 | 目标设备 | 手机 / 折叠屏 / 平板（`deviceTypes: phone, tablet, 2in1`） |
 | 构建产物 | `entry/build/default/outputs/default/entry-default-unsigned.hap` |
 
-**当前编译状态：`COMPILE RESULT` 无 ERROR，`BUILD SUCCESSFUL`，产物 488 KB。**
-仅剩 1 条提示性告警（`Prefs.ets:24` 的 `getPreferences` 可能抛异常）——
-该调用在 `AppStore.init` 里已被 `try/catch` 兜住，属于编译器无法跨函数看到的那一层保证。
+**当前编译状态**：`COMPILE RESULT` 无 ERROR，`BUILD SUCCESSFUL`，产物约 488 KB。
+仅剩 1 条提示性告警（`Prefs.ets` 里 `getPreferences` 可能抛异常）—— 该调用在 `AppStore.init` 中已被
+`try/catch` 兜住，属于编译器无法跨函数看到的那一层保证。
 
-### 步骤
+### 用 DevEco Studio 跑起来
 
-1. 打开 DevEco Studio → **File → Open**，选择本目录（`LevelUp`，即含 `oh-package.json5` 的那一层）。
+1. **File → Open**，选择本目录（含 `oh-package.json5` 的那一层）。
 2. 等待 **Sync Now** 完成。
 3. **File → Project Structure → Signing Configs** 勾选 **Automatically generate signature**（需登录华为账号）。
    - 命令行已能产出**未签名** HAP；要装到真机上必须再配签名。
-   - 工程里 `build-profile.json5` 的 `products[0].signingConfig` 指向名为 `default` 的签名配置；
-     若你用的是别的名字，改这一行，或删掉这一行让 DevEco 自动接管。
+   - `build-profile.json5` 里 `products[0].signingConfig` 指向名为 `default` 的签名配置；
+     若你用的是别的名字，改这一行，或删掉这一行让 DevEco Studio 自动接管。
 4. 连接真机或启动模拟器，点击 **Run**。
 
-### 命令行构建（已实测通过）
+### 命令行构建
 
 ```powershell
+# 按你机器上的安装路径改这两行
 $env:DEVECO_SDK_HOME = 'D:\Program Files\Huawei\DevEco Studio\sdk'
 $node = 'D:\Program Files\Huawei\DevEco Studio\tools\node\node.exe'
 $w    = 'D:\Program Files\Huawei\DevEco Studio\tools\hvigor\bin\hvigorw.js'
@@ -82,28 +84,54 @@ $w    = 'D:\Program Files\Huawei\DevEco Studio\tools\hvigor\bin\hvigorw.js'
 & $node $w clean --no-daemon
 ```
 
-`local.properties` 记录了本机的 `sdk.dir` 与 `nodejs.dir`；
+`local.properties` 记录本机的 `sdk.dir` 与 `nodejs.dir`，且已在 `.gitignore` 中忽略；
 换机器时改成你自己的路径，或直接删掉让 DevEco Studio 重新生成。
 
-### 静态自检
-
-无需任何依赖，用 Node 直接跑：
+### 静态自检（不需要 DevEco Studio）
 
 ```powershell
 node tools/validate.js
 ```
 
-会检查 6 项：JSON/JSON5 能否解析、`$r()` 资源是否都存在、`.ets` 之间 import 能否解析且符号确有导出、
-主题令牌是否拼错、**是否存在「调用了不存在的静态成员」**、`module.json5` / `main_pages.json`
-声明的文件是否真实存在。当前结果：**错误 0，警告 0**。
+零依赖，用 Node 直接跑。它检查 6 项：JSON / JSON5 能否解析、`$r()` 引用的资源是否都存在、
+`.ets` 之间的 import 能否解析且符号确有导出、主题令牌是否拼错、**是否存在「调用了不存在的静态成员」**、
+`module.json5` / `main_pages.json` 声明的文件是否真实存在。当前结果：**错误 0，警告 0**。
 
 > 第 5 项是为这个工程专门加的：在没有编译器的环境里，
-> 「删掉了某个方法、但别处还在调用」是最隐蔽的一类错误。它会跨全部 `.ets` 交叉校验
-> 183 个静态成员。
+> 「删掉了某个方法、但别处还在调用」是最隐蔽的一类错误。它会跨全部 `.ets` 交叉校验 198 个静态成员。
 
----
+## 界面与设计稿对照
 
-## 二、目录结构
+设计稿的全部 4 屏都已还原为原生页面，逐一对应如下：
+
+| 设计稿（`daily-quests-app.html`） | 实现位置 | 说明 |
+|---|---|---|
+| `.screen.cover` | [CoverView.ets](entry/src/main/ets/view/CoverView.ets) | 深色海报，`next-peek` 改造成进入今日任务的入口 |
+| `.screen.home` | [HomeView.ets](entry/src/main/ets/view/HomeView.ets) | 问候语 + 连续打卡 + 等级丝带 + 6 张任务卡 |
+| `.level-ribbon` | [LevelRibbon.ets](entry/src/main/ets/view/LevelRibbon.ets) | 进度条按真实 XP 计算，并带 `fillbar` 生长动画 |
+| `.quests` / `.q.q1…q6` | [QuestGrid.ets](entry/src/main/ets/view/QuestGrid.ets) / [QuestCard.ets](entry/src/main/ets/view/QuestCard.ets) | 卡片底色与图标底色逐条对应 `--tile-*` |
+| `.screen.detail` | [DetailView.ets](entry/src/main/ets/view/DetailView.ets) | 渐变 Hero、绝对定位 XP 印章、微任务清单、CTA |
+| `.screen.stats` | [StatsView.ets](entry/src/main/ets/view/StatsView.ets) | 周 / 月分段、汇总、目标卡、三宫格、任务分布 |
+| `.chart-card` / `.bars` | [XpChart.ets](entry/src/main/ets/view/XpChart.ets) | 柱高按当期最大值归一化 |
+| `.xp-tip`（tooltip） | [XpChart.ets](entry/src/main/ets/view/XpChart.ets) | `getRectangleById` 读真实布局反算位置，含边界夹取与 `.below` 翻转 |
+| `.tabbar` | [TabBar.ets](entry/src/main/ets/view/TabBar.ets) | 5 槽：今日 / 资料库 / ＋ / 数据 / 我的 |
+| `:root` 变量 | [Theme.ets](entry/src/main/ets/common/Theme.ets) | 全部冻结为具名令牌，组件不写死色值 |
+
+> **设计源文件不在本仓库内。** 原型 `daily-quests-app.html` 是移植的输入，没有随仓库分发；
+> 仓库里带的是它的整页渲染图 [`docs/design-full.png`](docs/design-full.png)（3188×1830，即 1594×915 @2x），
+> 以及从中裁出的四张界面图（720×1620）。裁切坐标由 [design_shot_geom.py](tools/design_shot_geom.py)
+> 按 CSS 规则逐条算出，不是目测。
+
+### 关于「资料库」和「我的」
+
+设计稿的标签栏有这两个入口，但没有对应画面。按同一套 token 补齐为可用的同风格页面，
+标签栏 5 个槽位全部可点、不报错：
+
+- **资料库**：任务全目录 + 本地存储说明。
+- **我的**：身份区、等级、累计经验、分类累计、数据管理（清空 / 恢复演示数据）。
+- **＋（中间按钮）**：弹出「新建任务」底部弹层 —— 因为该功能暂不做，这里明确告知用户。
+
+## 目录结构
 
 ```
 LevelUp/
@@ -142,40 +170,18 @@ LevelUp/
 │  │        ├─ TabBar.ets         底部 5 槽标签栏
 │  │        └─ Chip.ets           胶囊标签
 │  └─ src/ohosTest/                测试模块骨架
+├─ docs/
+│  ├─ design-full.png              设计稿整页渲染图
+│  └─ screenshots/                 裁好的四张界面图
 └─ tools/
-   ├─ validate.js                 工程静态校验
-   └─ gen_icons.py                重新生成图标资源
+   ├─ validate.js                  工程静态校验
+   ├─ design_shot_geom.py          按 CSS 推导单屏裁切坐标
+   ├─ crop_design_shots.py         从整页渲染图裁出单屏
+   ├─ gen_ui_icons.py              生成 UI 图标
+   └─ gen_icons.py                 生成应用图标
 ```
 
----
-
-## 三、设计稿 → 代码 对照表
-
-| 设计稿（`daily-quests-app.html`） | 实现位置 | 说明 |
-|---|---|---|
-| `.screen.cover` | [CoverView.ets](entry/src/main/ets/view/CoverView.ets) | 深色海报，`next-peek` 改造成进入今日任务的入口 |
-| `.screen.home` | [HomeView.ets](entry/src/main/ets/view/HomeView.ets) | 问候语 + 连续打卡 + 等级丝带 + 6 张任务卡 |
-| `.level-ribbon` | [LevelRibbon.ets](entry/src/main/ets/view/LevelRibbon.ets) | 进度条按真实 XP 计算并带 `fillbar` 生长动画 |
-| `.quests` / `.q.q1…q6` | [QuestGrid.ets](entry/src/main/ets/view/QuestGrid.ets) / [QuestCard.ets](entry/src/main/ets/view/QuestCard.ets) | 卡片底色与图标底色逐条对应 `--tile-*` |
-| `.screen.detail` | [DetailView.ets](entry/src/main/ets/view/DetailView.ets) | 渐变 Hero、绝对定位 XP 印章、微任务清单、CTA |
-| `.screen.stats` | [StatsView.ets](entry/src/main/ets/view/StatsView.ets) | 周/月分段、汇总、目标卡、三宫格、任务分布 |
-| `.chart-card` / `.bars` | [XpChart.ets](entry/src/main/ets/view/XpChart.ets) | 柱高按当期最大值归一化 |
-| `.xp-tip`（tooltip） | [XpChart.ets](entry/src/main/ets/view/XpChart.ets) | `getRectangleById` 读真实布局反算位置，含边界夹取与 `.below` 翻转 |
-| `.tabbar` | [TabBar.ets](entry/src/main/ets/view/TabBar.ets) | 5 槽：今日 / 资料库 / ＋ / 数据 / 我的 |
-| `:root` 变量 | [Theme.ets](entry/src/main/ets/common/Theme.ets) | 全部冻结为具名令牌，组件不写死色值 |
-
-### 关于「资料库」和「我的」
-
-设计稿的标签栏有这两个入口，但没有对应画面。按你选的方案，
-已用**同一套 token** 补齐为可用的同风格页面，标签栏 5 个槽位全部可点、不报错：
-
-- **资料库**：任务全目录 + 本地存储说明。
-- **我的**：身份区、等级、累计经验、分类累计、数据管理（清空 / 恢复演示数据）。
-- **＋（中间按钮）**：弹出「新建任务」底部弹层——因为功能暂不做，这里明确告知用户。
-
----
-
-## 四、数据与本地存储
+## 数据与本地存储
 
 全部状态用 `@kit.ArkData` 的 **Preferences** 存在应用私有目录，键值如下：
 
@@ -187,6 +193,8 @@ LevelUp/
 | `days` | string（JSON） | `{"2026-02-18": {"steps": ["body-1", ...]}}`，按日期归档的完成记录 |
 | `unlocked` | boolean | 是否已看过封面（决定冷启动落哪一页） |
 | `seedDay` / `version` | number | 首次安装播种标记、数据版本号 |
+
+想彻底清空，用「我的 → 清空全部本地数据」，或卸载应用 —— 数据没有第二份副本，也不会离开这台设备。
 
 ### AppStorage 里只放不可变值（重要）
 
@@ -241,9 +249,9 @@ LevelUp/
 保留的字符串镜像（`doneSteps` 等）仍然在用：详情页、任务卡、资料库订阅它们来渲染
 勾选状态 —— 那条路径是有效的（打卡的实时反馈也是好的）。
 
-设计要点：
+### 数据规则
 
-- **只存原始数据，派生指标一律现算**。今日进度、等级进度条、周/月统计、
+- **只存原始数据，派生指标一律现算**。今日进度、等级进度条、周 / 月统计、
   任务分布占比都由 `AppStore` 从 `days` + 任务目录算出来，
   所以任何一处打卡会让首页、详情页、数据页同时刷新，不会出现数据不一致。
 - **XP 只加不退**：首次从未完成变为完成时加分；取消勾选不回退，避免负余额和反复刷分。
@@ -256,9 +264,7 @@ LevelUp/
   **绝不动用户已经攒下的经验值**——这一点在早期实现里写错过，已修正。
 - 首次启动会写入设计稿的初始数值；「我的 → 恢复演示数据」可随时还原。
 
----
-
-## 五、设计保真说明
+## 设计保真说明
 
 ### 字体替换（唯一的有意偏离）
 
@@ -273,7 +279,7 @@ sans : HarmonyOS Sans SC, Noto Sans SC, sans-serif
 mono : HarmonyOS Sans SC, IBM Plex Mono, monospace
 ```
 
-如果你希望完全还原衬线/等宽的观感，把这三款字体的 `.ttf` 放进
+如果你希望完全还原衬线 / 等宽的观感，把这三款字体的 `.ttf` 放进
 `entry/src/main/resources/rawfile/`，然后在 `EntryAbility.onWindowStageCreate` 里用
 `font.registerFont()` 注册，再把 `Font` 里的名字改成注册名即可。
 
@@ -283,11 +289,11 @@ mono : HarmonyOS Sans SC, IBM Plex Mono, monospace
   `--tile-1…6`、`--line #ebe6dd`、`--muted #6c6660` 等逐个落到 `Color` 类。
 - **字号**：`54/42/30/18/15/14.5/14/13.5/12.5/11/10.5/10/9.5` 全部收录在 `FontSize`。
 - **间距**：`2…40` 收录在 `Space`，卡片外边距 14、页面内边距 22 与设计稿一致。
-- **圆角**：任务卡/图表卡 18、Hero 24、丝带 18、胶囊 999 等收录在 `Radius`。
+- **圆角**：任务卡 / 图表卡 18、Hero 24、丝带 18、胶囊 999 等收录在 `Radius`。
 - **动效**：`fillbar .7s`、`grow .6s`、`transition .15s`、tooltip `.16s` 收录在 `Motion`，
   用 `animateTo` 实现；系统开启「减少动态效果」时 ArkUI 会自动缩短时长。
 - **状态**：hover（`HoverEffect`）、按下、focus、空状态、tooltip 均已覆盖；
-  加载/错误态在纯本地数据下不会出现，故未伪造。
+  加载 / 错误态在纯本地数据下不会出现，故未伪造。
 - **文案与数值**：问候语、任务标题副标题、微任务步骤与 XP、周一到周日的 XP 柱值
   （180/240/310/160/270/200/120）、本周目标 1480/2000、三宫格数值均照搬设计稿。
 
@@ -300,9 +306,7 @@ mono : HarmonyOS Sans SC, IBM Plex Mono, monospace
 - 任务卡网格按宽度在 **2 / 3 / 4 列**之间切换；
 - 标题在宽屏按原稿的 `@media (max-width:1200px)` 规则从 54 缩到 46。
 
----
-
-## 六、已完成 / 未完成
+## 路线图
 
 **已完成（UI + 本地数据）**
 
@@ -310,11 +314,11 @@ mono : HarmonyOS Sans SC, IBM Plex Mono, monospace
 - 微任务勾选打卡、单任务一键完成、取消勾选
 - 经验值累计、等级换算、等级内进度条
 - 连续打卡天数
-- 数据页：周/月切换、XP 趋势图、触摸/悬停明细 tooltip、周目标、三宫格、任务分布（按真实数据计算）
+- 数据页：周 / 月切换、XP 趋势图、触摸 / 悬停明细 tooltip、周目标、三宫格、任务分布（按真实数据计算）
 - 本地持久化 + 冷启动恢复 + 跨天处理
 - 数据管理：清空本地数据、恢复演示数据（「我的」页）
 
-**未完成（按你的要求留白）**
+**未完成（有意留白）**
 
 - 新建 / 编辑 / 删除自定义任务（中间 ＋ 按钮目前是说明性弹层）
 - 任务提醒、通知、系统日历集成
@@ -322,9 +326,9 @@ mono : HarmonyOS Sans SC, IBM Plex Mono, monospace
 - 月视图的精确数据（目前是按周数据等比放大的一档演示数据）
 - 桌面卡片 / 服务卡片（原设计稿没有这一层，故未杜撰）
 
----
+欢迎就上面任何一条提 issue 或 PR —— 尤其是自定义任务这一块，`AppStore` 与 `Data.ets` 已经预留了数据结构。
 
-## 七、验收清单
+## 验收清单
 
 在 DevEco Studio 里跑起来之后，建议按这个顺序过一遍：
 
@@ -335,18 +339,16 @@ mono : HarmonyOS Sans SC, IBM Plex Mono, monospace
 5. **打卡**：点任意卡片进详情 → 勾选步骤，勾选圈变橙并出现对勾，文字加删除线，右侧变「已完成」。
 6. **经验值**：返回首页，等级丝带的 `1648` 已增加；再进「数据」页，今天的柱子和汇总同步变化。
 7. **tooltip**：数据页点住 / 悬停任意一根柱子，弹出深色明细卡；点最左、最右的柱子，卡片不会超出卡片边界。
-8. **周/月切换**：切到「月」，柱数变 4、目标变 8000，进度条平滑过渡。
+8. **周 / 月切换**：切到「月」，柱数变 4、目标变 8000，进度条平滑过渡。
 9. **持久化**：完全杀掉 App 再打开，**应当直接进入「今日」**且打卡记录还在。
 10. **跨天**：把系统日期改到明天再打开，今日进度归零、昨天记录保留。
 11. **空状态**：「我的」→ 清空全部本地数据 → 等级回到 1 级、进度归零，并回到封面。
-12. **不同尺寸**：折叠屏展开/平板下，内容居中有最大宽度，任务卡变 3～4 列，无横向滚动。
-13. **字体**：中文显示为 HarmonyOS Sans（非宋体/非默认衬线），数字为等宽观感。
+12. **不同尺寸**：折叠屏展开 / 平板下，内容居中有最大宽度，任务卡变 3～4 列，无横向滚动。
+13. **字体**：中文显示为 HarmonyOS Sans（非宋体 / 非默认衬线），数字为等宽观感。
 
----
+## 重新生成图标与截图
 
-## 八、重新生成图标
-
-图标分两套，都是脚本生成、可重复执行：
+三者都是脚本生成、可重复执行，依赖 **Python 3 + Pillow**（`pip install pillow`）：
 
 ```powershell
 # 1) UI 图标（标签栏 / 返回 / 对勾 / 趋势 / 6 个分类图标）
@@ -355,7 +357,16 @@ python tools/gen_ui_icons.py
 
 # 2) 应用图标（app_icon / background / foreground / startIcon）
 python tools/gen_icons.py
+
+# 3) 界面图：从整页设计稿渲染图裁出四张单屏（读 docs/design-full.png）
+python tools/crop_design_shots.py
+python tools/crop_design_shots.py <别的整页渲染图>   # 换源图
 ```
+
+裁屏脚本每屏输出两张：`01-cover.png` 这种只含屏幕内容的（仓库里收录的就是这一版，README 用的也是它），
+以及 `01-cover-full.png` 这种连机身一起的（未收录，已在 `.gitignore` 里忽略）。
+
+脚本里的路径都以仓库根目录为基准，在任何机器上克隆下来都能直接跑。
 
 ### 为什么图标是 PNG 而不是 SVG
 
@@ -377,3 +388,23 @@ python tools/gen_icons.py
 与 `*.png`（灰）两套，按选中状态切换资源。
 
 > 改配色时，改 `tools/gen_ui_icons.py` 顶部的颜色常量再跑一次即可。
+
+## 参与贡献
+
+Issue 和 PR 都欢迎。提交前请至少做到：
+
+1. `node tools/validate.js` 通过（错误 0、警告 0）。
+2. 在 DevEco Studio 里能 `BUILD SUCCESSFUL`，并按上面的验收清单过一遍受影响的项。
+3. **新增界面不要写死色值 / 字号 / 间距** —— 一律加到 [Theme.ets](entry/src/main/ets/common/Theme.ets) 的令牌里再用，
+   这是这个工程能对齐设计稿的原因。
+4. 改可见状态时，注意上面「界面刷新机制」那一节：走 `AppStore` 的写入口，别绕过镜像与 `refreshTick`。
+5. 文档改动请**同时更新 `README.md` 与 [README.en.md](README.en.md)**，两份内容保持一致。
+
+## 许可
+
+[MIT](LICENSE) © 2026 montersy123
+
+本仓库的代码与文档以 MIT 协议开源：可以自由使用、修改、分发，包括商用，只需保留版权与许可声明。
+
+界面的设计与文案来自本工程的移植输入 —— iPhone 原型 `daily-quests-app.html`，它**不在本仓库内**；
+`docs/` 下的图片是这份原型的整页渲染与裁切结果，仅用于说明界面来源与视觉基准。

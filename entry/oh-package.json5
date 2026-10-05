@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "进阶 Level 主模块",
   "main": "",
-  "author": "",
-  "license": "Apache-2.0",
+  "author": "montersy123",
+  "license": "MIT",
   "dependencies": {}
 }

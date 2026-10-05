@@ -1,6 +1,10 @@
 """
 把整页设计稿截图裁成单台手机，输出到 docs/screenshots/。
 
+每屏输出两张：
+  <名字>.png        只含屏幕内容（README 里用的就是这一版，仓库已收录）
+  <名字>-full.png   连机身一起（未收录，已在 .gitignore 里忽略）
+
 与 gen_screenshots_placeholder.py 的区别：
 本脚本产出的是**真实渲染的设计稿**（用无头 Chrome 跑 daily-quests-app.html），
 不是占位图。坐标由 design_shot_geom.py 按 CSS 规则推导，不是目测。
@@ -18,8 +22,11 @@ from PIL import Image
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from design_shot_geom import NAMES, PHONES_PAD_X, PHONE_PAD, PHONE_W, phone_rect
 
-RAW = r"D:\DshProjects\app\LevelUp\docs\_raw\design-full.png"
-OUT = r"D:\DshProjects\app\LevelUp\docs\screenshots"
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# 整页渲染图：仓库里带的是 docs/design-full.png；
+# 换一张源图时用 `python tools/crop_design_shots.py <源图路径>` 覆盖。
+RAW = sys.argv[1] if len(sys.argv) > 1 else os.path.join(ROOT, "docs", "design-full.png")
+OUT = os.path.join(ROOT, "docs", "screenshots")
 SCALE = 2          # 截图时的 --force-device-scale-factor
 WIDTH = 720        # 输出宽度（2x 裁剪后缩到 720，Retina 下清晰）
 
@@ -44,7 +51,7 @@ if __name__ == "__main__":
     print("源图:", src.size)
 
     for i, name in enumerate(NAMES):
-        for suffix, box in (("", crop_full(i)), ("-screen", crop_screen(i))):
+        for suffix, box in (("-full", crop_full(i)), ("", crop_screen(i))):
             part = src.crop(box)
             ratio = WIDTH / part.width
             part = part.resize((WIDTH, round(part.height * ratio)), Image.LANCZOS)

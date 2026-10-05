@@ -11,7 +11,8 @@
 **/.test
 build-log.txt
 
-# ╫ьм╪╫е╠╬╣даый╠╡ЗнО
+# Ф┬╙Е⌡╬Х└ Ф°╛Г └Д╦╢Ф≈╤Д╨╖Г┴╘
 docs/_raw/
+docs/screenshots/*-full.png
 __pycache__/
 *.pyc

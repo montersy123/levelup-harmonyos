@@ -19,8 +19,9 @@ import math
 import os
 from PIL import Image, ImageDraw
 
-MEDIA = r"D:\DshProjects\app\LevelUp\entry\src\main\resources\base\media"
-CHECK = r"D:\DshProjects\app\LevelUp\tools\icon_check"
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MEDIA = os.path.join(ROOT, "entry", "src", "main", "resources", "base", "media")
+CHECK = os.path.join(ROOT, "tools", "icon_check")
 os.makedirs(CHECK, exist_ok=True)
 
 S = 4                      # 超采样倍率

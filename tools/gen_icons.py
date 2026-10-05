@@ -3,7 +3,8 @@ import math
 import os
 from PIL import Image, ImageDraw
 
-OUT = r"D:\DshProjects\app\LevelUp\entry\src\main\resources\base\media"
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+OUT = os.path.join(ROOT, "entry", "src", "main", "resources", "base", "media")
 os.makedirs(OUT, exist_ok=True)
 
 INK = (26, 23, 20, 255)        # --ink  #1a1714
